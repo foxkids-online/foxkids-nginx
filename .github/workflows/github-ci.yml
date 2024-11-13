@@ -19,7 +19,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build end send image to Docker Hub
+      - name: Docker-compose installing
+        run: |
+          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose |
+          chmod +x /usr/local/bin/docker-compose
+
+      - name: Build end push image to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_TOKEN }}" | docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin! |
           docker compose build . |

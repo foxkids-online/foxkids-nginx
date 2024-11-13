@@ -28,6 +28,6 @@ jobs:
 
       - name: Build end push image to Docker Hub
         run: |
-          echo "${{ secrets.DOCKER_TOKEN }}" | docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin! |
+          docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_TOKEN }}"
           docker-compose build . |
           docker-compose image push "${{ secrets.DOCKER_USER }}"/"${{ secrets.DOCKER_FOLDER }}"

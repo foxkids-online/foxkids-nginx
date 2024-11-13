@@ -32,7 +32,7 @@ jobs:
       - name: Build image
         run:  docker compose build --pull
 
-      - name: Deploy image
-        run: docker compose push
+      - name: Tag image
+        run: docker tag server ${{ vars.DOCKER_USER }}/${{ vars.DOCKER_PATH }}:latest
 
       

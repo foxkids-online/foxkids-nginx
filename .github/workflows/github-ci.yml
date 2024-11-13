@@ -27,7 +27,7 @@ jobs:
           docker compose version
 
       - name: Login into dockerhub
-        run:  docker login $DOCKER_PATH -u $DOCKER_USERNAME -p $DOCKER_TOKEN
+        run:  docker login "${{ env.DOCKER_PATH }}" -u "${{ env.DOCKER_USERNAME }}" -p "${{ env.DOCKER_TOKEN }}"
       
       - name: Build image
         run:  docker compose build --pull

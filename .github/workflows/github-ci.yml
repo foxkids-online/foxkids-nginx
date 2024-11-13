@@ -26,8 +26,10 @@ jobs:
           chmod +x /usr/local/bin/docker-compose
           docker compose version
 
-      - name: Build end push image to Docker Hub
+      - name: Login into dockerhub
         run: |
           docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_TOKEN }}"
-          docker compose build -f docker-compose.yml
-          docker compose image push "${{ secrets.DOCKER_USER }}"/"${{ secrets.DOCKER_FOLDER }}"
+      
+      - name: Build image
+        run: |
+          docker compose build --file docker-compose.yml

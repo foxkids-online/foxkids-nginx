@@ -22,14 +22,17 @@ jobs:
       - name: Docker-compose installing
         run: |
           mkdir /usr/local/bin/docker-compose
-          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose |
+          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
           docker compose version
 
       - name: Login into dockerhub
-        run: |
-          docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_TOKEN }}"
+        run:  docker login "${{ secrets.DOCKER_PATH }}" -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_TOKEN }}"
       
       - name: Build image
-        run: |
-          docker compose build
+        run:  docker compose build --pull
+
+      - name: Deploy image
+        run: docker compose push
+
+      

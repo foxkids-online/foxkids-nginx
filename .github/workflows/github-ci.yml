@@ -32,4 +32,4 @@ jobs:
       
       - name: Build image
         run: |
-          docker compose build --file docker-compose.yml
+          docker compose build

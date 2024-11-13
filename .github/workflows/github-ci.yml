@@ -31,7 +31,7 @@ jobs:
       
       - name: Build image
         run: |
-          docker compose build --pull |
+          docker compose build |
           docker ps
 
       - name: Tag image

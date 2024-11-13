@@ -1,0 +1,26 @@
+# Доставка на сервер
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # позволяет ручной запуск
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      - name: Build end send image to Docker Hub
+        run: |
+          echo "${{ variables.DOCKER_TOKEN }}" | docker login "${{ variables.DOCKER_PATH }}" -u "${{ variables.DOCKER_USERNAME }}" --password-stdin!
+          docker build .
+          docker image push "${{ variables.DOCKER_USER }}"/"${{ variables.DOCKER_FOLDER }}"

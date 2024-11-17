@@ -41,7 +41,7 @@ jobs:
       - name: install sshkeys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ vars.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
       - name: deploy
         run: |

@@ -31,7 +31,7 @@ jobs:
 
       - name: Build and publish
         run: |
-          docker compose -f docker-compose.yml build --tag ${{ vars.DOCKER_TAG }} ${{ vars.DOCKER_REGISTRY }} |
-          docker compose push ${{ vars.DOCKER_REGISTRY }}
+          docker build --tag ${{ vars.DOCKER_TAG }} ${{ vars.DOCKER_REGISTRY }} |
+          docker push ${{ vars.DOCKER_REGISTRY }}
 
       

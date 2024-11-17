@@ -1,6 +1,6 @@
 # Доставка на сервер
 
-name: CI
+name: cd
 
 on:
   push:
@@ -34,5 +34,21 @@ jobs:
       
       - name: Publish Image
         run: docker push ${{ vars.DOCKER_REGISTRY }}:${{ vars.DOCKER_TAG }}
+  deploy:
+    name: deploy on stage
+    runs-on: ubuntu-latest
+    steps:
+      - name: install sshkeys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ vars.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
+      - name: deploy
+        run: |
+          ssh ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
+          cd nginx && mkdir ssl && ${{ vars.SSL_CERT }} >> ssl/foxkids.online.crt && 
+          ${{ vars.SSL_KEY }} >> ssl/foxkids.online.key &&  
+          curl https://raw.githubusercontent.com/zipkortnicks57/foxkids-nginx/refs/heads/${{ github.head_ref || github.ref_name }}/docker-compose.yml 
+          >> docker-compose.yml && docker-compose -f docker-compose.yml up  -d" 
 
       

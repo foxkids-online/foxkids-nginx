@@ -1,7 +1,7 @@
 services: 
   server:
     container_name: server
-    image: sha256:af0209507766dce39eddbb0f43e9e52337f91ca4a4aeff3ff0e30c4f30e8eab8
+    image: zipkortnicks57/foxkids_online:server
     build: .
     networks:
       - foxkids_network

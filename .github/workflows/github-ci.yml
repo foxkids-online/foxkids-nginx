@@ -31,7 +31,7 @@ jobs:
 
       - name: Build and publish
         run: |
-          docker build --tag ${{ vars.DOCKER_TAG }} ${{ vars.DOCKER_REGISTRY }} |
-          docker push ${{ vars.DOCKER_REGISTRY }}
+          docker build --tag ${{ vars.TAG }} |
+          docker push ${{ vars.DOCKER_REGISTRY }}:${{ vars.TAG }}
 
       

@@ -45,10 +45,6 @@ jobs:
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
       - name: deploy
         run: |
-          ssh ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
-          cd nginx && mkdir ssl && ${{ vars.SSL_CERT }} >> ssl/foxkids.online.crt && 
-          ${{ vars.SSL_KEY }} >> ssl/foxkids.online.key &&  
-          curl https://raw.githubusercontent.com/zipkortnicks57/foxkids-nginx/refs/heads/${{ github.head_ref || github.ref_name }}/docker-compose.yml 
-          >> docker-compose.yml && docker-compose -f docker-compose.yml up  -d" 
+          ssh ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} 
 
       

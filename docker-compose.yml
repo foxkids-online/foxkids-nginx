@@ -1,7 +1,8 @@
 services: 
   server:
     container_name: server
-    image: alfg/nginx-rtmp:latest
+    # image: alfg/nginx-rtmp:latest
+    build: .
     networks:
       - foxkids_network
     ports:
@@ -9,7 +10,7 @@ services:
       - "443:443"
       - "1935:1935"
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf.template"
+      # - "./nginx.conf:/etc/nginx/nginx.conf.template"
       - "/docker/foxkids/ssl/:/etc/nginx/ssl/"
       - "/opt/data/hls:/opt/data/hls"
 

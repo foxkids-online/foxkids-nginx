@@ -19,22 +19,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Docker-compose installing
-        run: |
-          mkdir /usr/local/bin/docker-compose |
-          curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose |
-          chmod +x /usr/local/bin/docker-compose |
-          docker compose version
+      # - name: Docker-compose installing
+      #   run: |
+      #     mkdir /usr/local/bin/docker-compose |
+      #     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose |
+      #     chmod +x /usr/local/bin/docker-compose |
+      #     docker compose version
 
       - name: Login into dockerhub
         run:  echo "${{ vars.DOCKER_TOKEN }}" | docker login "${{ vars.DOCKER_PATH }}" -u "${{ vars.DOCKER_USER }}" --password-stdin
-      
-      - name: Build image
-        run: |
-          docker compose -f docker-compose.yml build |
-          docker ps
 
-      - name: Tag image
-        run: docker tag server ${{ vars.DOCKER_USER }}/${{ vars.DOCKER_PATH }}:latest
+      - name: Build and publish
+        run: |
+          docker compose -f docker-compose.yml build --tag ${{ vars.DOCKER_TAG }} ${{ vars.DOCKER_REGISTRY }} |
+          docker compose push ${{ vars.DOCKER_REGISTRY }}
 
       

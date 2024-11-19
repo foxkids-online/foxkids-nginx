@@ -44,9 +44,10 @@ jobs:
           echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa 
           chmod 600 ~/.ssh/id_rsa 
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
-          cat ~/.ssh/id_rsa 
+          
       - name: deploy
         run: |
+          cat ~/.ssh/id_rsa |
           ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
           cd nginx && mkdir ssl && echo '${{ vars.SSL_CERT }}'' >> ssl/foxkids.online.crt && 
           echo '${{ vars.SSL_KEY }}' >> ssl/foxkids.online.key &&  

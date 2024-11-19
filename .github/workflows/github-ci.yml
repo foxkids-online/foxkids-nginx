@@ -40,12 +40,12 @@ jobs:
     steps:
       - name: install sshkeys
         run: |
-          install -m 700 -D /dev/null ~/.ssh/id_rsa
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
       - name: deploy
         run: |
-          ssh -i " ~/.ssh/id_rsa" ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
+          ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
           cd nginx && mkdir ssl && echo '${{ vars.SSL_CERT }}'' >> ssl/foxkids.online.crt && 
           echo '${{ vars.SSL_KEY }}' >> ssl/foxkids.online.key &&  
           curl https://raw.githubusercontent.com/zipkortnicks57/foxkids-nginx/refs/heads/${{ github.head_ref || github.ref_name }}/docker-compose.yml 

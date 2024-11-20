@@ -40,9 +40,10 @@ jobs:
     steps:
       - name: install sshkeys
         run: |
-          mkdir -p ~/.ssh/ |
-          echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa |
-          chmod 600 ~/.ssh/id_rsa |
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/id_rsa
+          chmod 700 ~/.ssh/id_rsa 
+          echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa 
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
       - name: check ssh
         run: cat ~/.ssh/id_rsa

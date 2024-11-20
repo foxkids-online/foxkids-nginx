@@ -16,5 +16,4 @@ services:
 networks:
   foxkids_network:
     driver: bridge
-    name: foxkids_network
 

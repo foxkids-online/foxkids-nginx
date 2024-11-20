@@ -46,9 +46,7 @@ jobs:
           echo "${{ vars.SSH_KEY }}" > ~/.ssh/id_rsa 
           ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
       - name: check ssh
-        run: | 
-          cat ~/.ssh/id_rsa
-          ssh-keygen -l -f ~/.ssh/id_rsa
+        run: ssh-keygen -l -f ~/.ssh/id_rsa
       - name: deploy
         run: ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }}
       

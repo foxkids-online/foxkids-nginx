@@ -46,7 +46,7 @@ jobs:
       - name: deploy
         run: |
           ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
-          cd nginx && mkdir ssl && echo '${{ secrets.SSL_CERT }}'' >> ssl/foxkids.online.crt && 
-          echo '${{ secrets.SSL_KEY }}' >> ssl/foxkids.online.key &&  
+          cd nginx && mkdir ssl && echo "${{ secrets.SSL_CERT }}" >> ssl/foxkids.online.crt && 
+          echo "${{ secrets.SSL_KEY }}" >> ssl/foxkids.online.key &&  
           curl https://raw.githubusercontent.com/zipkortnicks57/foxkids-nginx/refs/heads/${{ github.head_ref || github.ref_name }}/docker-compose.yml" 
       

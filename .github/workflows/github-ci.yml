@@ -47,6 +47,6 @@ jobs:
       - name: check ssh
         run: cat ~/.ssh/id_rsa
       - name: deploy
-        run: ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }}
+        run: ssh -i '~/.ssh/id_rsa' ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }}
 
       

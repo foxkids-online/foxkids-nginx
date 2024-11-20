@@ -19,13 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # - name: Docker-compose installing
-      #   run: |
-      #     mkdir /usr/local/bin/docker-compose |
-      #     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose |
-      #     chmod +x /usr/local/bin/docker-compose |
-      #     docker compose version
-
       - name: Login into dockerhub
         run:  echo "${{ secrets.DOCKER_TOKEN }}" | docker login "${{ vars.DOCKER_PATH }}" -u "${{ vars.DOCKER_USER }}" --password-stdin
 
@@ -38,6 +31,7 @@ jobs:
     name: deploy on stage
     runs-on: ubuntu-latest
     needs: [build]
+    if: ${{ needs.build.result == 'success'}}
     steps:
       - name: install sshkeys
         run: |
@@ -50,5 +44,9 @@ jobs:
         run:
           ssh-keygen -l -f ~/.ssh/id_rsa
       - name: deploy
-        run: ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }}
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} "cd ${{ vars.WORKDIR }} && mkdir nginx &&
+          cd nginx && mkdir ssl && echo '${{ secrets.SSL_CERT }}'' >> ssl/foxkids.online.crt && 
+          echo '${{ secrets.SSL_KEY }}' >> ssl/foxkids.online.key &&  
+          curl https://raw.githubusercontent.com/zipkortnicks57/foxkids-nginx/refs/heads/${{ github.head_ref || github.ref_name }}/docker-compose.yml" 
       

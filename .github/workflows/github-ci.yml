@@ -10,9 +10,7 @@ on:
 
   # позволяет ручной запуск
   workflow_dispatch:
-env:
-  REPO: ${{ github.event.pull_request.head.repo.full_name }}
-  BRANCH: ${{ github.head_ref || github.ref_name }}
+
 jobs:
   build:
     name: Build and publish
@@ -34,6 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     if: ${{ needs.build.result == 'success'}}
+    env:
+      REPO: ${{ github.event.pull_request.head.repo.full_name }}
+      BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - name: Install sshkeys
         run: |

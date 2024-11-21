@@ -25,4 +25,8 @@
 `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys`  
 Проверка ключа  
 `cat ~/.ssh/id_rsa`  
+На самой машине добавить юзеру права на докер  
+`sudo chown foxkids /var/run/docker.sock`  
+Добавить id_rsa в !СЕКРЕТЫ! т.к. в vars будет нарушена структура файла  
+Внутри папки `/home/foxkids/` , куда будет производиться установка проекта
 

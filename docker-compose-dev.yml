@@ -2,7 +2,7 @@ version: "3"
 services: 
   server:
     container_name: server
-    image: zipkortnicks57/foxkids_online:server
+    image: zipkortnicks57/foxkids_online:nginx-server
     build: .
     networks:
       - foxkids_network

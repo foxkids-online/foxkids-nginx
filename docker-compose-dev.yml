@@ -1,7 +1,9 @@
+version: "3"
 services: 
   server:
     container_name: server
-    image: alfg/nginx-rtmp:latest
+    image: zipkortnicks57/foxkids_online:nginx-server
+    build: .
     networks:
       - foxkids_network
     ports:
@@ -9,12 +11,10 @@ services:
       - "443:443"
       - "1935:1935"
     volumes:
-      - "./nginx.conf:/etc/nginx/nginx.conf.template"
       - "./ssl/:/etc/nginx/ssl/"
       - "/opt/data/hls:/opt/data/hls"
 
 networks:
   foxkids_network:
     driver: bridge
-    name: foxkids_network
 

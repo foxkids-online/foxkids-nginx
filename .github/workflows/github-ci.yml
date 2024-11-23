@@ -1,6 +1,6 @@
 # Доставка на сервер
 
-name: CI
+name: cd
 
 on:
   push:
@@ -10,17 +10,50 @@ on:
 
   # позволяет ручной запуск
   workflow_dispatch:
-
+env:
+  REPO: ${{ github.event.repository.full_name }}
+  BRANCH: ${{ github.head_ref || github.ref_name }}
 jobs:
   build:
-    name: build image
+    name: Build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build end send image to Docker Hub
+      - name: Login into dockerhub
+        run:  echo "${{ secrets.DOCKER_TOKEN }}" | docker login "${{ vars.DOCKER_PATH }}" -u "${{ vars.DOCKER_USER }}" --password-stdin
+
+      - name: Build Image
+        run: docker build . -t ${{ vars.DOCKER_REGISTRY }}:${{ vars.DOCKER_TAG }} --no-cache
+      
+      - name: Publish Image
+        run: docker push ${{ vars.DOCKER_REGISTRY }}:${{ vars.DOCKER_TAG }}
+  deploy:
+    name: Deploy on stage
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ needs.build.result == 'success'}}
+    steps:
+      - name: Install sshkeys
         run: |
-          echo "${{ variables.DOCKER_TOKEN }}" | docker login "${{ variables.DOCKER_PATH }}" -u "${{ variables.DOCKER_USERNAME }}" --password-stdin! |
-          docker build . |
-          docker image push "${{ variables.DOCKER_USER }}"/"${{ variables.DOCKER_FOLDER }}"
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/id_rsa
+          chmod 700 ~/.ssh/id_rsa 
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa 
+          ssh-keyscan -H ${{ vars.SSH_HOST }} > ~/.ssh/known_hosts  
+      - name: Check ssh
+        run:
+          ssh-keygen -l -f ~/.ssh/id_rsa
+      - name: Deploy
+      
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ vars.SSH_USER}}@${{ vars.SSH_HOST }} 'cd ${{ vars.WORKDIR }} && mkdir -p nginx &&
+          cd nginx && mkdir -p ssl && echo "${{ secrets.SSL_CERT }}" > ${{ vars.SSL_CERT_PATH }} && 
+          echo "${{ secrets.SSL_KEY }}" > ${{ vars.SSL_KEY_PATH }} && 
+          echo "${{ secrets.DOCKER_TOKEN }}" | docker login "${{ vars.DOCKER_PATH }}" -u "${{ vars.DOCKER_USER }}" --password-stdin && 
+          curl https://raw.githubusercontent.com/${{ env.REPO }}/refs/heads/${{ env.BRANCH }}/docker-compose.yml > docker-compose.yml &&
+          docker-compose -f docker-compose.yml up  -d --no-deps --build'
+      - name: Clear ssh on runner
+        run: rm -r ~/.ssh
+      

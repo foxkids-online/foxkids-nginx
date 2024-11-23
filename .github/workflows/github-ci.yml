@@ -3,13 +3,12 @@
 name: cd
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
   # позволяет ручной запуск
   workflow_dispatch:
+  
 env:
   REPO: ${{ github.event.repository.full_name }}
   BRANCH: ${{ github.head_ref || github.ref_name }}

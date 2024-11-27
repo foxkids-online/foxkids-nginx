@@ -11,7 +11,6 @@ services:
       - "1936:1935"
     volumes:
       - "/home/foxkids/foxkids-project/nginx/ssl/:/etc/nginx/ssl/"
-      - "/opt/data/hls:/opt/data/hls"
 
 networks:
   foxkids_network:

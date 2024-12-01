@@ -10,7 +10,8 @@ services:
       - "444:443"
       - "1936:1935"
     volumes:
-      - "/home/foxkids/foxkids-project/nginx/ssl/:/etc/nginx/ssl/"
+      - /etc/localtime:/etc/localtime:ro # синхронизация времени
+      - /home/foxkids/foxkids-project/nginx/ssl:/etc/nginx/ssl:ro
 
 networks:
   foxkids_network:

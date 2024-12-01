@@ -11,8 +11,8 @@ services:
       - "443:443"
       - "1935:1935"
     volumes:
-      - "./ssl/:/etc/nginx/ssl/"
-      - "/opt/data/hls:/opt/data/hls"
+      - ./ssl:/etc/nginx/ssl:ro
+      - /opt/data/hls:/opt/data/hls
 
 networks:
   foxkids_network:

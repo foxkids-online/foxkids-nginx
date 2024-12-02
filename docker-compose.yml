@@ -6,9 +6,9 @@ services:
     networks:
       - foxkids_network
     ports:
-      - "81:80"
-      - "444:443"
-      - "1936:1935"
+      - "80:80"
+      - "443:443"
+      - "1935:1935"
     volumes:
       - /etc/localtime:/etc/localtime:ro # синхронизация времени
       - /home/foxkids/foxkids-project/nginx/ssl:/etc/nginx/ssl:ro

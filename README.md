@@ -41,7 +41,7 @@
 `useradd $SSH_USER`  
 
 Выдача прав владельца на папку пользователя  
-`sudo chown $SSH_USER: /home/$SSH_USER/`  
+`sudo chown -R $SSH_USER: /home/$SSH_USER/*`  
 
 Создание ключа  (выполнять от лица пользователя, который ответственен за деплой)
 `ssh-keygen -t rsa -b 4096`  
